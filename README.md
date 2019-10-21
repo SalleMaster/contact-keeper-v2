@@ -23,3 +23,14 @@ MEARN Stack Practice
 ## Line for instaling dev dependencies
 
 - npm i -D nodemon concurrently
+
+## React dependencies -MUST BE INSTALLED IN CLIENT FOLDER 'cd client'
+
+- axios to fetch data
+- react-router-dom
+- uuid for generatin id
+- react-transition-group for animation
+
+## Line for installing React dependencies
+
+- npm i axios react-router-dom uuid react-transition-group
