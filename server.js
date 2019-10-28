@@ -1,13 +1,34 @@
 const express = require('express');
 const connectDB = require('./config/db');
+const fileUpload = require('express-fileupload');
+const cors = require('cors');
+const morgan = require('morgan');
+const _ = require('lodash');
+const bodyParser = require('body-parser');
 
 const app = express();
 
 // Connect Database
 connectDB();
 
+// enable files upload
+app.use(
+  fileUpload({
+    createParentPath: true,
+    limits: {
+      fileSize: 2 * 1024 * 1024 * 1024 //2MB max file(s) size
+    }
+  })
+);
+
 // init Middleware - To Able To Read: req.body
 app.use(express.json({ extended: false }));
+
+//add other middleware
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan('dev'));
 
 app.get('/', (req, res) =>
   res.json({
@@ -19,6 +40,11 @@ app.get('/', (req, res) =>
 app.use('/api/users', require('./routes/users'));
 app.use('/api/contacts', require('./routes/contacts'));
 app.use('/api/auth', require('./routes/auth'));
+app.use('/upload-avatar', require('./routes/avatar'));
+app.use('/upload-photos', require('./routes/photos'));
+
+//make uploads directory static
+app.use(express.static('uploads'));
 
 const PORT = process.env.PORT || 5000;
 

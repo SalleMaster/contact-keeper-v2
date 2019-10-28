@@ -34,3 +34,11 @@ MEARN Stack Practice
 ## Line for installing React dependencies
 
 - npm i axios react-router-dom uuid react-transition-group
+
+## Uploading files to MongoDB
+
+- npm i multer multer-gridfs-storage gridfs-stream method-override
+
+## Uploading files to server using express-fileupload
+
+- npm install express body-parser cors express-fileupload morgan lodash --save
