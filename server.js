@@ -3,7 +3,6 @@ const connectDB = require('./config/db');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const morgan = require('morgan');
-const _ = require('lodash');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -26,8 +25,8 @@ app.use(express.json({ extended: false }));
 
 //add other middleware
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 app.get('/', (req, res) =>
@@ -40,8 +39,9 @@ app.get('/', (req, res) =>
 app.use('/api/users', require('./routes/users'));
 app.use('/api/contacts', require('./routes/contacts'));
 app.use('/api/auth', require('./routes/auth'));
-app.use('/upload-avatar', require('./routes/avatar'));
-app.use('/upload-photos', require('./routes/photos'));
+app.use('/api/gallery', require('./routes/gallery'));
+// app.use('/upload-avatar', require('./routes/avatar'));
+// app.use('/upload-photos', require('./routes/photos'));
 
 //make uploads directory static
 app.use(express.static('uploads'));
