@@ -51,7 +51,6 @@ router.post('/', async (req, res) => {
         price,
         category,
         description,
-        images,
         imagesObject
       });
 
@@ -79,6 +78,71 @@ router.get('/', async (req, res) => {
     });
 
     res.json(galleryItems);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    PUT api/gallery:id
+// @desc     Update gallery item
+// @access   Public (Should be private)
+router.put('/:id', async (req, res) => {
+  const { name, price, category, description } = req.body;
+
+  // Buld Contact Object
+  const galleryItemFields = {};
+  if (name) galleryItemFields.name = name;
+  if (price) galleryItemFields.price = price;
+  if (category) galleryItemFields.category = category;
+  if (description) galleryItemFields.description = description;
+
+  if (req.files) {
+    let imageData = [];
+
+    let mainImage = req.files.mainImage;
+
+    mainImage.mv('./uploads/' + mainImage.name);
+
+    //loop all files
+    _.forEach(_.keysIn(req.files.images), key => {
+      let image = req.files.images[key];
+
+      //move photo to upload directory
+      image.mv('./uploads/' + image.name);
+
+      //push file details
+      imageData.push({
+        name: image.name,
+        mimetype: image.mimetype,
+        size: image.size
+      });
+    });
+
+    const images = imageData.map(photo => photo.name);
+
+    const imagesObject = {
+      images,
+      mainImage: mainImage.name
+    };
+
+    galleryItemFields.imagesObject = imagesObject;
+  }
+
+  try {
+    let item = await GalleryItem.findById(req.params.id);
+
+    if (!item) {
+      return res.status(404).json({ msg: 'Gallery item not found' });
+    }
+
+    items = await GalleryItem.findByIdAndUpdate(
+      req.params.id,
+      { $set: galleryItemFields },
+      { new: true }
+    );
+
+    res.json(item);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

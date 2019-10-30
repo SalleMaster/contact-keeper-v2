@@ -3,7 +3,7 @@ const connectDB = require('./config/db');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 
 const app = express();
 

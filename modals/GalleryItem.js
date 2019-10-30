@@ -13,10 +13,10 @@ const GallerySchema = mongoose.Schema({
     type: String,
     required: true
   },
-  images: {
-    type: Array,
-    required: true
-  },
+  // images: {
+  //   type: Array,
+  //   required: true
+  // },
   imagesObject: {
     type: Object,
     required: true
