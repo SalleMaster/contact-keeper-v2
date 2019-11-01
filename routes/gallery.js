@@ -21,12 +21,6 @@ router.post(
     check('category', 'Please enter Gallery Item Category')
       .not()
       .isEmpty(),
-    check('images', 'Please enter Gallery Item Images')
-      .not()
-      .isFile(),
-    check('mainImage', 'Please enter Gallery Item Main Image')
-      .not()
-      .isFile(),
     check('description', 'Please enter Gallery Item mainImage')
       .not()
       .isEmpty()
@@ -45,34 +39,57 @@ router.post(
       let images = req.files.images;
 
       // Save main image to Server
-      mainImage.mv('./uploads/' + mainImage.name);
+      if (!mainImage) {
+        return res.status(400).json({ msg: 'Main image must be uploaded' });
+      } else {
+        mainImage.mv('./uploads/' + mainImage.name);
+      }
 
-      // Save other images to Server
-      //loop all files
-      _.forEach(_.keysIn(images), key => {
-        let image = req.files.images[key];
+      if (images) {
+        // Save other images to Server
+        //loop all files
+        _.forEach(_.keysIn(images), key => {
+          let image = req.files.images[key];
 
-        //move photo to upload directory
-        image.mv('./uploads/' + image.name);
-      });
+          //move photo to upload directory
+          image.mv('./uploads/' + image.name);
+        });
 
-      const newGalleryItem = new GalleryItem({
-        name,
-        price,
-        category,
-        description,
-        images,
-        mainImage
-      });
+        const newGalleryItem = new GalleryItem({
+          name,
+          price,
+          category,
+          description,
+          images,
+          mainImage
+        });
 
-      const galleryObject = await newGalleryItem.save();
+        const galleryObject = await newGalleryItem.save();
 
-      //return response
-      res.send({
-        status: true,
-        message: 'Gallery item saved to database',
-        galleryObject
-      });
+        //return response
+        res.send({
+          status: true,
+          message: 'Gallery item saved to database',
+          galleryObject
+        });
+      } else {
+        const newGalleryItem = new GalleryItem({
+          name,
+          price,
+          category,
+          description,
+          mainImage
+        });
+
+        const galleryObject = await newGalleryItem.save();
+
+        //return response
+        res.send({
+          status: true,
+          message: 'Gallery item saved to database',
+          galleryObject
+        });
+      }
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
