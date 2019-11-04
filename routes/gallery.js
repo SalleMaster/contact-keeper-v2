@@ -21,7 +21,7 @@ router.post(
     check('category', 'Please enter Gallery Item Category')
       .not()
       .isEmpty(),
-    check('description', 'Please enter Gallery Item mainImage')
+    check('description', 'Please enter Gallery Item Description')
       .not()
       .isEmpty()
   ],
@@ -34,61 +34,63 @@ router.post(
     try {
       // Pull data from request
       const { name, price, category, description } = req.body;
-      // Pull Images from request
-      let mainImage = req.files.mainImage;
-      let images = req.files.images;
 
-      // Save main image to Server
-      if (!mainImage) {
+      // Check if mainImage is uploaded
+      if (!req.files) {
         return res.status(400).json({ msg: 'Main image must be uploaded' });
       } else {
+        let mainImage = req.files.mainImage;
         mainImage.mv('./uploads/' + mainImage.name);
-      }
 
-      if (images) {
-        // Save other images to Server
-        //loop all files
-        _.forEach(_.keysIn(images), key => {
-          let image = req.files.images[key];
+        // Check if images are uploaded
+        if (req.files.images) {
+          let images = req.files.images;
+          let imagesArray = [];
+          // Save other images to Server
+          //loop all files
+          _.forEach(_.keysIn(images), key => {
+            let image = req.files.images[key];
 
-          //move photo to upload directory
-          image.mv('./uploads/' + image.name);
-        });
+            //move photo to upload directory
+            image.mv('./uploads/' + image.name);
+            imagesArray.push(image.name);
+          });
 
-        const newGalleryItem = new GalleryItem({
-          name,
-          price,
-          category,
-          description,
-          images,
-          mainImage
-        });
+          const newGalleryItem = new GalleryItem({
+            name,
+            price,
+            category,
+            description,
+            images: imagesArray,
+            mainImage: mainImage.name
+          });
 
-        const galleryObject = await newGalleryItem.save();
+          const galleryObject = await newGalleryItem.save();
 
-        //return response
-        res.send({
-          status: true,
-          message: 'Gallery item saved to database',
-          galleryObject
-        });
-      } else {
-        const newGalleryItem = new GalleryItem({
-          name,
-          price,
-          category,
-          description,
-          mainImage
-        });
+          //return response
+          res.send({
+            status: true,
+            message: 'Gallery item saved to database',
+            galleryObject
+          });
+        } else {
+          const newGalleryItem = new GalleryItem({
+            name,
+            price,
+            category,
+            description,
+            mainImage: mainImage.name
+          });
 
-        const galleryObject = await newGalleryItem.save();
+          const galleryObject = await newGalleryItem.save();
 
-        //return response
-        res.send({
-          status: true,
-          message: 'Gallery item saved to database',
-          galleryObject
-        });
+          //return response
+          res.send({
+            status: true,
+            message: 'Gallery item saved to database',
+            galleryObject
+          });
+        }
       }
     } catch (err) {
       console.error(err.message);
