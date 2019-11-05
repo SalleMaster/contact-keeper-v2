@@ -36,7 +36,7 @@ router.post(
       const { name, price, category, description } = req.body;
 
       // Check if mainImage is uploaded
-      if (!req.files) {
+      if (req.files === null || req.files.mainImage === undefined) {
         return res.status(400).json({ msg: 'Main image must be uploaded' });
       } else {
         let mainImage = req.files.mainImage;
@@ -135,37 +135,29 @@ router.put('/:id', async (req, res) => {
 
   // If user sent files include them also
   if (req.files) {
-    let imageData = [];
-
-    let mainImage = req.files.mainImage;
-
-    if (mainImage) {
+    // Check for main image update
+    if (req.files.mainImage) {
+      let mainImage = req.files.mainImage;
       mainImage.mv('./uploads/' + mainImage.name);
+      galleryItemFields.mainImage = mainImage.name;
     }
 
-    //loop all files
-    _.forEach(_.keysIn(req.files.images), key => {
-      let image = req.files.images[key];
+    // check for images update
+    if (req.files.images) {
+      let images = req.files.images;
+      let imagesArray = [];
+      // Save other images to Server
+      //loop all files
+      _.forEach(_.keysIn(images), key => {
+        let image = req.files.images[key];
 
-      //move photo to upload directory
-      image.mv('./uploads/' + image.name);
-
-      //push file details
-      imageData.push({
-        name: image.name,
-        mimetype: image.mimetype,
-        size: image.size
+        //move photo to upload directory
+        image.mv('./uploads/' + image.name);
+        imagesArray.push(image.name);
       });
-    });
 
-    const images = imageData.map(photo => photo.name);
-
-    const imagesObject = {
-      images,
-      mainImage: mainImage.name
-    };
-
-    galleryItemFields.imagesObject = imagesObject;
+      galleryItemFields.images = imagesArray;
+    }
   }
 
   try {
