@@ -7,6 +7,11 @@ const Gallery = () => {
 
   const { getGalleryItems } = galleryContext;
 
+  useEffect(() => {
+    getGalleryItems('');
+    // eslint-disable-next-line
+  }, []);
+
   const onChange = e => {
     const category = e.target.value;
 
