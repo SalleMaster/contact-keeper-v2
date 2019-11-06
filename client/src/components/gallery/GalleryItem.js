@@ -10,6 +10,7 @@ const GalleryItem = ({ galleryItem }) => {
   return (
     <Fragment>
       <h1>{name}</h1>
+      <img src={`/uploads/${mainImage}`} alt="" />
     </Fragment>
   );
 };

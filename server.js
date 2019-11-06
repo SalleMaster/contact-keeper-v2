@@ -35,6 +35,9 @@ app.get('/', (req, res) =>
   })
 );
 
+//make uploads directory static
+app.use('/uploads', express.static('uploads'));
+
 // Define Routes
 app.use('/api/users', require('./routes/users'));
 app.use('/api/contacts', require('./routes/contacts'));
@@ -42,9 +45,6 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/gallery', require('./routes/gallery'));
 // app.use('/upload-avatar', require('./routes/avatar'));
 // app.use('/upload-photos', require('./routes/photos'));
-
-//make uploads directory static
-app.use(express.static('uploads'));
 
 const PORT = process.env.PORT || 5000;
 
