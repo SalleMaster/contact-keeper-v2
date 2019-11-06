@@ -1,24 +1,32 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useContext, useEffect } from 'react';
+import GalleryContext from '../../context/gallery/galleryContext';
 import GalleryGrid from '../gallery/GalleryGrid';
 
 const Gallery = () => {
-  const onSubmit = () => {
-    console.log('Form action');
+  const galleryContext = useContext(GalleryContext);
+
+  const { getGalleryItems } = galleryContext;
+
+  const onChange = e => {
+    const category = e.target.value;
+
+    getGalleryItems(category);
   };
 
   return (
     <Fragment>
       <h1>Gallery</h1>
-      <form onSubmit={onSubmit}>
-        <div className='form-group'>
-          <label htmlFor='category'>Select Category</label>
-          <select className='form-control' id='category'>
-            <option>Action</option>
-            <option>Pixel Art</option>
-            <option>RPG</option>
-          </select>
-        </div>
-      </form>
+
+      <div className="form-group">
+        <label htmlFor="category">Select Category</label>
+        <select className="form-control" id="category" onChange={onChange}>
+          <option value="">--</option>
+          <option value="Action">Action</option>
+          <option value="Pixel Art">Pixel Art</option>
+          <option value="RPG">RPG</option>
+        </select>
+      </div>
+
       <GalleryGrid />
     </Fragment>
   );

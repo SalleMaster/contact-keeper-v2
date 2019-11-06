@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import './App.css';
+import './Bootstrap.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Home from './components/pages/Home';
@@ -30,14 +31,14 @@ const App = () => {
             <Router>
               <Fragment>
                 <Navbar />
-                <div className='container'>
+                <div className="container">
                   <Alerts />
                   <Switch>
-                    <PrivateRoute exact path='/' component={Home} />
-                    <Route exact path='/about' component={About} />
-                    <Route exact path='/gallery' component={Gallery} />
-                    <Route exact path='/register' component={Register} />
-                    <Route exact path='/login' component={Login} />
+                    <PrivateRoute exact path="/" component={Home} />
+                    <Route exact path="/about" component={About} />
+                    <Route exact path="/gallery" component={Gallery} />
+                    <Route exact path="/register" component={Register} />
+                    <Route exact path="/login" component={Login} />
                   </Switch>
                 </div>
               </Fragment>

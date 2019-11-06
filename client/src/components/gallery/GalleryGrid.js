@@ -14,9 +14,9 @@ const GalleryGrid = () => {
 
   return (
     <Fragment>
-      <div className='grid-2'>
+      <div className="grid-2">
         {galleryItems.map(galleryItem => (
-          <GalleryItem galleryItem={galleryItem} />
+          <GalleryItem galleryItem={galleryItem} key={galleryItem._id} />
         ))}
       </div>
     </Fragment>

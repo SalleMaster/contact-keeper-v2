@@ -102,12 +102,12 @@ router.post(
 // @route    GET api/gallery
 // @desc     Get all Gallery Items
 // @access   Public
-router.get('/', async (req, res) => {
+router.get('/:category*?', async (req, res) => {
   try {
     // Category Field Optinal
-    if (req.body.category) {
+    if (req.params.category) {
       const galleryItems = await GalleryItem.find({
-        category: req.body.category
+        category: req.params.category
       });
       res.json(galleryItems);
     } else {
