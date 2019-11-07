@@ -1,11 +1,18 @@
 import React, { Fragment, useContext } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import GalleryContext from '../../context/gallery/galleryContext';
 
 const GalleryItem = ({ galleryItem }) => {
   const galleryContext = useContext(GalleryContext);
 
+  const { setCurrent } = galleryContext;
+
   const { category, description, images, mainImage, name, price } = galleryItem;
+
+  const onClick = () => {
+    setCurrent(galleryItem);
+  };
 
   return (
     <Fragment>
@@ -14,9 +21,13 @@ const GalleryItem = ({ galleryItem }) => {
         <div className="card-body">
           <h4 className="card-title">{name}</h4>
           <p className="card-text">{description}</p>
-          <a className="btn btn-success btn-block" href="#">
+          <Link
+            className="btn btn-success btn-block"
+            to="/gallery/read-more"
+            onClick={onClick}
+          >
             Read More
-          </a>
+          </Link>
         </div>
       </div>
     </Fragment>

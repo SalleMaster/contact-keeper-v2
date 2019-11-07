@@ -2,7 +2,7 @@ import {
   GET_GALLERY_ITEMS,
   ADD_GALLERY_ITEM,
   DELETE_GALLERY_ITEM,
-  SET_CURRENT_GALLERY_ITEM,
+  SET_CURRENT,
   CLEAR_CURRENT_GALLERY_ITEM,
   UPDATE_GALLERY_ITEM,
   FILTER_GALLERY_ITEMS,
@@ -22,6 +22,11 @@ export default (state, action) => {
       return {
         ...state,
         galleryError: action.payload
+      };
+    case SET_CURRENT:
+      return {
+        ...state,
+        current: action.payload
       };
     default:
       return state;

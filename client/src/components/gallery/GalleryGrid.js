@@ -12,6 +12,10 @@ const GalleryGrid = () => {
     return <h4>Gallery is empty</h4>;
   }
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <Fragment>
       <div className="grid-2">

@@ -6,12 +6,12 @@ import {
   GET_GALLERY_ITEMS,
   ADD_GALLERY_ITEM,
   DELETE_GALLERY_ITEM,
-  SET_CURRENT_GALLERY_ITEM,
   CLEAR_CURRENT_GALLERY_ITEM,
   UPDATE_GALLERY_ITEM,
   FILTER_GALLERY_ITEMS,
   CLEAR_GALLERY_ITEMS,
-  GALLERY_ERROR
+  GALLERY_ERROR,
+  SET_CURRENT
 } from '../types';
 
 const GalleryState = props => {
@@ -73,10 +73,10 @@ const GalleryState = props => {
       //   __v: 0
       // }
     ],
-    currentGalleryItem: null,
+    current: null,
     filteredGalleryItem: null,
     galleryError: null,
-    galleryLoading: true
+    loading: true
   };
 
   const [state, dispatch] = useReducer(galleryReducer, initialState);
@@ -115,8 +115,8 @@ const GalleryState = props => {
   };
 
   // Set Current Gallery Item
-  const setCurrentGalleryItem = async () => {
-    console.log('Set Current Gallery Item');
+  const setCurrent = galleryItem => {
+    dispatch({ type: SET_CURRENT, payload: galleryItem });
   };
 
   // Clear Current Gallery Item
@@ -143,13 +143,13 @@ const GalleryState = props => {
     <GalleryContext.Provider
       value={{
         galleryItems: state.galleryItems,
-        currentGalleryItem: state.currentGalleryItem,
+        current: state.current,
         filteredGalleryItem: state.filteredGalleryItem,
         galleryError: state.galleryError,
-        galleryLoading: state.galleryLoading,
+        loading: state.loading,
         addGalleryItem,
         deleteGalleryItem,
-        setCurrentGalleryItem,
+        setCurrent,
         clearCurrentGalleryItem,
         updateGalleryItem,
         filterGalleryItems,

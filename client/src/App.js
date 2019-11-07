@@ -6,6 +6,7 @@ import Navbar from './components/layout/Navbar';
 import Home from './components/pages/Home';
 import About from './components/pages/About';
 import Gallery from './components/pages/Gallery';
+import ReadMore from './components/gallery/ReadMore';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Alerts from './components/layout/Alerts';
@@ -39,6 +40,11 @@ const App = () => {
                     <Route exact path="/gallery" component={Gallery} />
                     <Route exact path="/register" component={Register} />
                     <Route exact path="/login" component={Login} />
+                    <Route
+                      exact
+                      path="/gallery/read-more"
+                      component={ReadMore}
+                    />
                   </Switch>
                 </div>
               </Fragment>
