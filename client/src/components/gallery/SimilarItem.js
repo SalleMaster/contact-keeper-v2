@@ -16,7 +16,7 @@ const SimilarItem = item => {
   return (
     <Fragment>
       {
-        <div className="col-3">
+        <div className="col-sm-6 col-md-3">
           <div className="card similar-item-card">
             <img
               className="card-img-top"
@@ -25,7 +25,11 @@ const SimilarItem = item => {
             />
             <div className="card-body">
               <p className="card-title">{name}</p>
-              <Link to="/gallery/read-more" onClick={onClick}>
+              <Link
+                to="/gallery/read-more"
+                onClick={onClick}
+                className="btn btn-sm btn-success"
+              >
                 Read More
               </Link>
             </div>

@@ -5,7 +5,19 @@
 
 // Similar item card
 .similar-item-card {
-  .card-title {
-    font-size: 1rem;
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0;
+    margin-top: 0.5rem;
+    .card-title {
+      font-size: 0.7rem;
+    }
+    .btn {
+      font-size: 0.7rem;
+      padding: 0.3rem;
+    }
   }
 }

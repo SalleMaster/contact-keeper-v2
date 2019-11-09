@@ -28,7 +28,7 @@ const ReadMore = () => {
           <div className="card">
             <div
               id="slider"
-              className="carousel slide mb-5"
+              className="carousel slide mb-2"
               data-ride="carousel"
             >
               <ol className="carousel-indicators">
@@ -84,8 +84,18 @@ const ReadMore = () => {
               </a>
             </div>
             <div className="card-body">
-              <h4 className="card-title">{name}</h4>
-              <p className="card-text">{description}</p>
+              <h3 className="card-title text-center">{name}</h3>
+              <p className="card-text">
+                Description:{' '}
+                <span className="badge badge-light p-2">{description}</span>
+              </p>
+              <p className="card-text">
+                Category:{' '}
+                <span className="badge badge-secondary p-2">{category}</span>
+              </p>
+              <p className="card-text">
+                Price: <span className="badge badge-primary p-2">{price}</span>
+              </p>
             </div>
           </div>
         </div>
