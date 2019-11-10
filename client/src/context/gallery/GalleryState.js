@@ -105,8 +105,39 @@ const GalleryState = props => {
   };
 
   // Add Gallery Item
-  const addGalleryItem = async () => {
-    console.log('Add Gallery Item');
+  const addGalleryItem = async galleryItem => {
+    const {
+      name,
+      category,
+      price,
+      description,
+      mainImage,
+      images
+    } = galleryItem;
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('category', category);
+    formData.append('price', price);
+    formData.append('description', description);
+    formData.append('mainImage', mainImage);
+    formData.append('images', images);
+
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    };
+
+    try {
+      const res = await axios.post(`/api/gallery`, formData, config);
+
+      dispatch({ type: ADD_GALLERY_ITEM, payload: res.data });
+    } catch (err) {
+      dispatch({
+        type: GALLERY_ERROR,
+        payload: err.response.msg
+      });
+    }
   };
 
   // Delete Gallery Item

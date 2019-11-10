@@ -12,6 +12,12 @@ import {
 
 export default (state, action) => {
   switch (action.type) {
+    case ADD_GALLERY_ITEM:
+      return {
+        ...state,
+        galleryItems: [action.payload, ...state.galleryItems],
+        loading: false
+      };
     case GET_GALLERY_ITEMS:
       return {
         ...state,

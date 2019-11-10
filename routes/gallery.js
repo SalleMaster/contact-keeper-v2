@@ -68,11 +68,7 @@ router.post(
           const galleryObject = await newGalleryItem.save();
 
           //return response
-          res.send({
-            status: true,
-            message: 'Gallery item saved to database',
-            galleryObject
-          });
+          res.send(galleryObject);
         } else {
           const newGalleryItem = new GalleryItem({
             name,
@@ -85,11 +81,7 @@ router.post(
           const galleryObject = await newGalleryItem.save();
 
           //return response
-          res.send({
-            status: true,
-            message: 'Gallery item saved to database',
-            galleryObject
-          });
+          res.send(galleryObject);
         }
       }
     } catch (err) {
