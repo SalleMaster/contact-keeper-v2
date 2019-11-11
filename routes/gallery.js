@@ -45,6 +45,7 @@ router.post(
         // Check if images are uploaded
         if (req.files.images) {
           let images = req.files.images;
+
           let imagesArray = [];
           // Save other images to Server
           //loop all files

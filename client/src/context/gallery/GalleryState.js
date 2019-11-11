@@ -120,7 +120,10 @@ const GalleryState = props => {
     formData.append('price', price);
     formData.append('description', description);
     formData.append('mainImage', mainImage);
-    formData.append('images', images);
+    // Append all images
+    for (let i = 0; i < images.length; i++) {
+      formData.append('images', images[i]);
+    }
 
     const config = {
       headers: {
