@@ -10,6 +10,18 @@ const GalleryItem = ({ galleryItem }) => {
 
   const { category, description, images, mainImage, name, price } = galleryItem;
 
+  let badgeStyle = '';
+
+  if (category === 'RPG') {
+    badgeStyle = 'badge-danger';
+  }
+  if (category === 'Pixel Art') {
+    badgeStyle = 'badge-primary';
+  }
+  if (category === 'Action') {
+    badgeStyle = 'badge-warning';
+  }
+
   const onClick = () => {
     setCurrent(galleryItem);
   };
@@ -18,9 +30,12 @@ const GalleryItem = ({ galleryItem }) => {
     <Fragment>
       <div className="card">
         <img className="card-img-top" src={`/uploads/${mainImage}`} alt="" />
-        <div className="card-body">
+        <div className="card-body text-center d-flex flex-column justify-content-between">
           <h4 className="card-title">{name}</h4>
-          <p className="card-text">{description}</p>
+          <p className="card-text text-left">
+            <span className={`badge ${badgeStyle} p-2`}>{category}</span>
+          </p>
+
           <Link
             className="btn btn-success btn-block"
             to="/gallery/read-more"

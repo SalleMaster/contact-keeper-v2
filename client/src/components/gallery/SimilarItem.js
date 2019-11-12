@@ -17,13 +17,13 @@ const SimilarItem = item => {
     <Fragment>
       {
         <div className="col-sm-6 col-md-3">
-          <div className="card similar-item-card">
+          <div className="card similar-item-card" style={{ height: '100%' }}>
             <img
               className="card-img-top"
               src={`/uploads/${mainImage}`}
               alt=""
             />
-            <div className="card-body">
+            <div className="card-body d-flex flex-column justify-content-around">
               <p className="card-title">{name}</p>
               <Link
                 to="/gallery/read-more"
