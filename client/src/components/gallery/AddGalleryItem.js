@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useContext } from 'react';
 import GalleryContext from '../../context/gallery/galleryContext';
-import axios from 'axios';
 
 const AddGalleryItem = () => {
   const galleryContext = useContext(GalleryContext);

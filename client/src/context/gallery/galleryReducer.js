@@ -34,6 +34,14 @@ export default (state, action) => {
         ...state,
         current: action.payload
       };
+    case DELETE_GALLERY_ITEM:
+      return {
+        ...state,
+        galleryItems: state.galleryItems.filter(
+          item => item._id !== action.payload
+        ),
+        loading: false
+      };
     default:
       return state;
   }

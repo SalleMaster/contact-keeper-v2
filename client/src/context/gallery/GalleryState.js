@@ -144,8 +144,17 @@ const GalleryState = props => {
   };
 
   // Delete Gallery Item
-  const deleteGalleryItem = async () => {
-    console.log('Delete Gallery Item');
+  const deleteGalleryItem = async id => {
+    try {
+      const res = await axios.delete(`/api/gallery/${id}`);
+
+      dispatch({ type: DELETE_GALLERY_ITEM, payload: id });
+    } catch (err) {
+      dispatch({
+        type: GALLERY_ERROR,
+        payload: err.response.msg
+      });
+    }
   };
 
   // Set Current Gallery Item

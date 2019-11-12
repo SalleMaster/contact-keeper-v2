@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const _ = require('lodash');
+const fs = require('fs');
 
 // Avatar Schema
 const GalleryItem = require('../modals/GalleryItem');
@@ -179,6 +180,27 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     let galleryItem = await GalleryItem.findById(req.params.id);
+
+    const { images, mainImage } = galleryItem;
+
+    // Delete mainImage
+    fs.unlink(`./uploads/${mainImage}`, err => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+    });
+
+    // Delete images
+    images.map(image => {
+      const path = `./uploads/${image}`;
+      fs.unlink(path, err => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+      });
+    });
 
     if (!galleryItem) {
       return res.status(404).json({ msg: 'Gallery Item not found' });
