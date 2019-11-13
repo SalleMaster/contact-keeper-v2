@@ -1,28 +1,28 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { check, validationResult } = require('express-validator');
-const _ = require('lodash');
-const fs = require('fs');
+const { check, validationResult } = require("express-validator");
+const _ = require("lodash");
+const fs = require("fs");
 
 // Avatar Schema
-const GalleryItem = require('../modals/GalleryItem');
+const GalleryItem = require("../modals/GalleryItem");
 
 // @route    POST api/gallery
 // @desc     Upload gallery item
 // @access   Public (should be private)
 router.post(
-  '/',
+  "/",
   [
-    check('name', 'Please enter Gallery Item Name')
+    check("name", "Please enter Gallery Item Name")
       .not()
       .isEmpty(),
-    check('price', 'Please enter Gallery Item Price')
+    check("price", "Please enter Gallery Item Price")
       .not()
       .isEmpty(),
-    check('category', 'Please enter Gallery Item Category')
+    check("category", "Please enter Gallery Item Category")
       .not()
       .isEmpty(),
-    check('description', 'Please enter Gallery Item Description')
+    check("description", "Please enter Gallery Item Description")
       .not()
       .isEmpty()
   ],
@@ -38,10 +38,10 @@ router.post(
 
       // Check if mainImage is uploaded
       if (req.files === null || req.files.mainImage === undefined) {
-        return res.status(400).json({ msg: 'Main image must be uploaded' });
+        return res.status(400).json({ msg: "Main image must be uploaded" });
       } else {
         let mainImage = req.files.mainImage;
-        mainImage.mv('./uploads/' + mainImage.name);
+        mainImage.mv("./uploads/" + mainImage.name);
 
         // Check if images are uploaded
         if (req.files.images) {
@@ -54,7 +54,7 @@ router.post(
             let image = req.files.images[key];
 
             //move photo to upload directory
-            image.mv('./uploads/' + image.name);
+            image.mv("./uploads/" + image.name);
             imagesArray.push(image.name);
           });
 
@@ -88,7 +88,7 @@ router.post(
       }
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send("Server Error");
     }
   }
 );
@@ -96,7 +96,7 @@ router.post(
 // @route    GET api/gallery
 // @desc     Get all Gallery Items
 // @access   Public
-router.get('/:category*?', async (req, res) => {
+router.get("/:category*?", async (req, res) => {
   try {
     // Category Field Optinal
     if (req.params.category) {
@@ -110,15 +110,17 @@ router.get('/:category*?', async (req, res) => {
     }
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
 // @route    PUT api/gallery:id
 // @desc     Update gallery item
 // @access   Public (Should be private)
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   const { name, price, category, description } = req.body;
+
+  console.log(req.body);
 
   // Buld GalleryItem Object
   const galleryItemFields = {};
@@ -131,13 +133,31 @@ router.put('/:id', async (req, res) => {
   if (req.files) {
     // Check for main image update
     if (req.files.mainImage) {
+      // Delete original mainImage
+      fs.unlink(`./uploads/${galleryItemFields.mainImage}`, err => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+      });
       let mainImage = req.files.mainImage;
-      mainImage.mv('./uploads/' + mainImage.name);
+      console.log(mainImage);
+      mainImage.mv("./uploads/" + mainImage.name);
       galleryItemFields.mainImage = mainImage.name;
     }
 
     // check for images update
     if (req.files.images) {
+      // Delete images
+      galleryItemFields.images.map(image => {
+        const path = `./uploads/${image}`;
+        fs.unlink(path, err => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+        });
+      });
       let images = req.files.images;
       let imagesArray = [];
       // Save other images to Server
@@ -146,7 +166,7 @@ router.put('/:id', async (req, res) => {
         let image = req.files.images[key];
 
         //move photo to upload directory
-        image.mv('./uploads/' + image.name);
+        image.mv("./uploads/" + image.name);
         imagesArray.push(image.name);
       });
 
@@ -158,26 +178,26 @@ router.put('/:id', async (req, res) => {
     let item = await GalleryItem.findById(req.params.id);
 
     if (!item) {
-      return res.status(404).json({ msg: 'Gallery item not found' });
+      return res.status(404).json({ msg: "Gallery item not found" });
     }
 
-    items = await GalleryItem.findByIdAndUpdate(
+    item = await GalleryItem.findByIdAndUpdate(
       req.params.id,
       { $set: galleryItemFields },
       { new: true }
     );
 
-    res.json(items);
+    res.json(item);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
 // @route    DELETE api/gallery:id
 // @desc     Delete a gallery item
 // @access   Public (should be private)
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     let galleryItem = await GalleryItem.findById(req.params.id);
 
@@ -203,15 +223,15 @@ router.delete('/:id', async (req, res) => {
     });
 
     if (!galleryItem) {
-      return res.status(404).json({ msg: 'Gallery Item not found' });
+      return res.status(404).json({ msg: "Gallery Item not found" });
     }
 
     await GalleryItem.findByIdAndRemove(req.params.id);
 
-    res.json({ msg: 'Gallery Item Removed' });
+    res.json({ msg: "Gallery Item Removed" });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 

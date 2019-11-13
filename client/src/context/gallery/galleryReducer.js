@@ -8,7 +8,7 @@ import {
   FILTER_GALLERY_ITEMS,
   CLEAR_GALLERY_ITEMS,
   GALLERY_ERROR
-} from '../types';
+} from "../types";
 
 export default (state, action) => {
   switch (action.type) {
@@ -39,6 +39,14 @@ export default (state, action) => {
         ...state,
         galleryItems: state.galleryItems.filter(
           item => item._id !== action.payload
+        ),
+        loading: false
+      };
+    case UPDATE_GALLERY_ITEM:
+      return {
+        ...state,
+        galleryItems: state.galleryItems.map(galleryItem =>
+          galleryItem._id === action.payload._id ? action.payload : galleryItem
         ),
         loading: false
       };

@@ -1,24 +1,25 @@
 import React, { Fragment, useState, useContext } from "react";
 import GalleryContext from "../../context/gallery/galleryContext";
 
-const AddGalleryItem = () => {
+const EditGalleryItem = () => {
   const galleryContext = useContext(GalleryContext);
 
-  const { addGalleryItem } = galleryContext;
+  let { updateGalleryItem, current, setCurrent, galleryItems } = galleryContext;
 
   const [galleryItem, setGalleryItem] = useState({
-    name: "",
-    category: "",
-    description: "",
-    price: "",
+    _id: current._id,
+    name: current.name,
+    category: current.category,
+    description: current.description,
+    price: current.price,
     mainImage: "",
     images: ""
   });
 
-  const [mainImageName, setMainImageName] = useState("Choose file");
-  const [imagesName, setImagesName] = useState("Choose file");
+  const [mainImageName, setMainImageName] = useState(current.mainImage);
+  const [imagesName, setImagesName] = useState(current.images);
 
-  const { name, category, description, price } = galleryItem;
+  const { name, category, description, price, mainImage, images } = galleryItem;
 
   const onChange = e => {
     setGalleryItem({
@@ -50,29 +51,27 @@ const AddGalleryItem = () => {
 
   const onSubmit = e => {
     e.preventDefault();
-    addGalleryItem(galleryItem);
-    setGalleryItem({
-      name: "",
-      category: "",
-      description: "",
-      price: "",
-      mainImage: "",
-      images: ""
-    });
+    updateGalleryItem(galleryItem);
+
+    const updated = galleryItems.filter(item => item._id === current._id);
+
+    setCurrent(updated[0]);
   };
 
   const onClose = () => {
-    setGalleryItem({
-      name: "",
-      category: "",
-      description: "",
-      price: "",
-      mainImage: "",
-      images: ""
-    });
+    console.log("onClose");
+  };
 
-    setMainImageName("Choose File");
-    setImagesName("Choose File");
+  const openModal = () => {
+    setGalleryItem({
+      ...galleryItem,
+      name: current.name,
+      category: current.category,
+      description: current.description,
+      price: current.price,
+      mainImage: current.mainImage,
+      images: current.images
+    });
   };
 
   return (
@@ -81,21 +80,21 @@ const AddGalleryItem = () => {
       <div className="row">
         <div className="col m-right">
           <button
-            className="btn btn-primary"
+            className="btn btn-primary btn-block mt-1 mb-1"
             data-toggle="modal"
-            data-target="#addGalleryItem"
+            data-target="#editGalleryItem"
           >
-            Add Gallery Item
+            <div onClick={openModal}>Edit Gallery Item</div>
           </button>
         </div>
       </div>
 
       {/* MODAL */}
-      <div className="modal" id="addGalleryItem">
+      <div className="modal" id="editGalleryItem">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Add Gallery Item</h5>
+              <h5 className="modal-title">Edit Gallery Item</h5>
               <button className="close" data-dismiss="modal">
                 <span onClick={onClose}>&times;</span>
               </button>
@@ -111,7 +110,6 @@ const AddGalleryItem = () => {
                     className="form-control"
                     value={name}
                     onChange={onChange}
-                    required
                   />
                 </div>
                 <div className="form-group">
@@ -121,7 +119,6 @@ const AddGalleryItem = () => {
                     id="category"
                     name="category"
                     onChange={onChange}
-                    required
                     value={category}
                   >
                     <option value="">--</option>
@@ -139,7 +136,6 @@ const AddGalleryItem = () => {
                     placeholder="Description"
                     className="form-control"
                     onChange={onChange}
-                    required
                     value={description}
                   ></textarea>
                 </div>
@@ -151,12 +147,11 @@ const AddGalleryItem = () => {
                     placeholder="Price"
                     className="form-control"
                     onChange={onChange}
-                    required
                     value={price}
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="mainImage">Insert Main Image</label>
+                  <label htmlFor="mainImage">Change Main Image</label>
                   <div className="custom-file">
                     <input
                       type="file"
@@ -164,7 +159,6 @@ const AddGalleryItem = () => {
                       name="mainImage"
                       className="custom-file-input"
                       onChange={onChangeMainImage}
-                      required
                     />
                     <label
                       className="custom-file-label"
@@ -176,7 +170,7 @@ const AddGalleryItem = () => {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="images">Insert Slide Images</label>
+                  <label htmlFor="images">Change Slide Images</label>
                   <div className="custom-file">
                     <input
                       type="file"
@@ -191,14 +185,16 @@ const AddGalleryItem = () => {
                       htmlFor="slideImages"
                       style={{ overflow: "hidden" }}
                     >
-                      {imagesName}
+                      {imagesName.length > 1
+                        ? imagesName.map(image => image + " ")
+                        : imagesName}
                     </label>
                   </div>
                 </div>
                 <div className="modal-footer">
                   <input
                     type="submit"
-                    value="Upload"
+                    value="Confirm Edit"
                     className="btn btn-primary btn-block mt-4"
                   />
                 </div>
@@ -211,4 +207,4 @@ const AddGalleryItem = () => {
   );
 };
 
-export default AddGalleryItem;
+export default EditGalleryItem;

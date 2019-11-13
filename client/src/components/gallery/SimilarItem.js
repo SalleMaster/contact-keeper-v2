@@ -1,14 +1,14 @@
-import React, { Fragment, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import GalleryContext from '../../context/gallery/galleryContext';
-import PropTypes from 'prop-types';
+import React, { Fragment, useContext } from "react";
+import { Link } from "react-router-dom";
+import GalleryContext from "../../context/gallery/galleryContext";
+import PropTypes from "prop-types";
 
 const SimilarItem = item => {
   const galleryContext = useContext(GalleryContext);
 
   const { setCurrent } = galleryContext;
 
-  const { category, description, images, mainImage, name, price } = item.item;
+  const { mainImage, name } = item.item;
 
   const onClick = () => {
     setCurrent(item.item);
@@ -17,7 +17,7 @@ const SimilarItem = item => {
     <Fragment>
       {
         <div className="col-sm-6 col-md-3">
-          <div className="card similar-item-card" style={{ height: '100%' }}>
+          <div className="card similar-item-card" style={{ height: "100%" }}>
             <img
               className="card-img-top"
               src={`/uploads/${mainImage}`}

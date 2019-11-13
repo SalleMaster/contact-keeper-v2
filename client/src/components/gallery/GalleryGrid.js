@@ -1,7 +1,7 @@
-import React, { Fragment, useContext, useEffect } from 'react';
-import GalleryContext from '../../context/gallery/galleryContext';
-import GalleryItem from './GalleryItem';
-import Spinner from '../layout/Spinner';
+import React, { Fragment, useContext } from "react";
+import GalleryContext from "../../context/gallery/galleryContext";
+import GalleryItem from "./GalleryItem";
+import Spinner from "../layout/Spinner";
 
 const GalleryGrid = () => {
   const galleryContext = useContext(GalleryContext);

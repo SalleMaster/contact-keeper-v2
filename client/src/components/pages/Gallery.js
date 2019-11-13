@@ -1,7 +1,7 @@
-import React, { Fragment, useState, useContext, useEffect } from 'react';
-import GalleryContext from '../../context/gallery/galleryContext';
-import GalleryGrid from '../gallery/GalleryGrid';
-import AddGalleryItem from '../gallery/AddGalleryItem';
+import React, { Fragment, useContext, useEffect } from "react";
+import GalleryContext from "../../context/gallery/galleryContext";
+import GalleryGrid from "../gallery/GalleryGrid";
+import AddGalleryItem from "../gallery/AddGalleryItem";
 
 const Gallery = () => {
   const galleryContext = useContext(GalleryContext);
@@ -9,7 +9,7 @@ const Gallery = () => {
   const { getGalleryItems } = galleryContext;
 
   useEffect(() => {
-    getGalleryItems('');
+    getGalleryItems("");
     // eslint-disable-next-line
   }, []);
 

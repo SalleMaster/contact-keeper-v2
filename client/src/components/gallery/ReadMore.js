@@ -1,7 +1,8 @@
-import React, { useContext, Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import GalleryContext from '../../context/gallery/galleryContext';
-import SimilarItem from './SimilarItem';
+import React, { useContext, Fragment } from "react";
+import { Link } from "react-router-dom";
+import GalleryContext from "../../context/gallery/galleryContext";
+import SimilarItem from "./SimilarItem";
+import EditGalleryItem from "./EditGalleryItem";
 
 const ReadMore = () => {
   const galleryContext = useContext(GalleryContext);
@@ -10,16 +11,16 @@ const ReadMore = () => {
 
   const { category, description, images, mainImage, name, price } = current;
 
-  let badgeStyle = '';
+  let badgeStyle = "";
 
-  if (category === 'RPG') {
-    badgeStyle = 'badge-danger';
+  if (category === "RPG") {
+    badgeStyle = "badge-danger";
   }
-  if (category === 'Pixel Art') {
-    badgeStyle = 'badge-primary';
+  if (category === "Pixel Art") {
+    badgeStyle = "badge-primary";
   }
-  if (category === 'Action') {
-    badgeStyle = 'badge-warning';
+  if (category === "Action") {
+    badgeStyle = "badge-warning";
   }
 
   const similarItems = galleryItems.filter(
@@ -103,13 +104,14 @@ const ReadMore = () => {
               </div>
 
               <p className="card-text">
-                Category:{' '}
+                Category:{" "}
                 <span className={`badge ${badgeStyle} p-2`}>{category}</span>
               </p>
               <p className="card-text">
-                Price:{' '}
+                Price:{" "}
                 <span className="badge badge-success p-2">{`$${price}`}</span>
               </p>
+              <EditGalleryItem />
             </div>
           </div>
         </div>

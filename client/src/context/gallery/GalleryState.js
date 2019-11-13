@@ -1,7 +1,7 @@
-import React, { useReducer } from 'react';
-import GalleryContext from './galleryContext';
-import galleryReducer from './galleryReducer';
-import axios from 'axios';
+import React, { useReducer } from "react";
+import GalleryContext from "./galleryContext";
+import galleryReducer from "./galleryReducer";
+import axios from "axios";
 import {
   GET_GALLERY_ITEMS,
   ADD_GALLERY_ITEM,
@@ -12,7 +12,7 @@ import {
   CLEAR_GALLERY_ITEMS,
   GALLERY_ERROR,
   SET_CURRENT
-} from '../types';
+} from "../types";
 
 const GalleryState = props => {
   const initialState = {
@@ -85,7 +85,7 @@ const GalleryState = props => {
   const getGalleryItems = async category => {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       }
     };
 
@@ -115,19 +115,19 @@ const GalleryState = props => {
       images
     } = galleryItem;
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('category', category);
-    formData.append('price', price);
-    formData.append('description', description);
-    formData.append('mainImage', mainImage);
+    formData.append("name", name);
+    formData.append("category", category);
+    formData.append("price", price);
+    formData.append("description", description);
+    formData.append("mainImage", mainImage);
     // Append all images
     for (let i = 0; i < images.length; i++) {
-      formData.append('images', images[i]);
+      formData.append("images", images[i]);
     }
 
     const config = {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        "Content-Type": "multipart/form-data"
       }
     };
 
@@ -164,22 +164,45 @@ const GalleryState = props => {
 
   // Clear Current Gallery Item
   const clearCurrentGalleryItem = async () => {
-    console.log('Clear Current Gallery Item');
+    console.log("Clear Current Gallery Item");
   };
 
   // Update Gallery Item
-  const updateGalleryItem = async () => {
-    console.log('Update Gallery Item');
+  const updateGalleryItem = async galleryItem => {
+    // contact.id = uuid.v4();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    try {
+      const res = await axios.put(
+        `/api/gallery/${galleryItem._id}`,
+        galleryItem,
+        config
+      );
+
+      setCurrent(res.data);
+
+      dispatch({ type: UPDATE_GALLERY_ITEM, payload: res.data });
+    } catch (err) {
+      dispatch({
+        type: GALLERY_ERROR,
+        payload: err.response.msg
+      });
+    }
   };
 
   // Filter Gallery Items
   const filterGalleryItems = async () => {
-    console.log('Filter Gallery Items');
+    console.log("Filter Gallery Items");
   };
 
   // Clear Gallery Items
   const clearGalleryItems = async () => {
-    console.log('Clear Gallery Items');
+    console.log("Clear Gallery Items");
   };
 
   return (
