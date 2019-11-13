@@ -19,7 +19,7 @@ const EditGalleryItem = () => {
   const [mainImageName, setMainImageName] = useState(current.mainImage);
   const [imagesName, setImagesName] = useState(current.images);
 
-  const { name, category, description, price, mainImage, images } = galleryItem;
+  const { name, category, description, price } = galleryItem;
 
   const onChange = e => {
     setGalleryItem({

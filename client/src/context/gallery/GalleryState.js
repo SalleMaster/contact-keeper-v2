@@ -173,16 +173,19 @@ const GalleryState = props => {
 
     const config = {
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "multipart/form-data"
       }
     };
 
     try {
-      const res = await axios.put(
-        `/api/gallery/${galleryItem._id}`,
-        galleryItem,
-        config
-      );
+      // const res = await axios.put(
+      //   `/api/gallery/${galleryItem._id}`,
+      //   galleryItem,
+      //   config
+      // );
+
+      console.log(galleryItem);
+      const res = await axios.put(`/api/gallery`, galleryItem, config);
 
       setCurrent(res.data);
 

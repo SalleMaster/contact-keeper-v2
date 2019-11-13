@@ -117,10 +117,9 @@ router.get("/:category*?", async (req, res) => {
 // @route    PUT api/gallery:id
 // @desc     Update gallery item
 // @access   Public (Should be private)
-router.put("/:id", async (req, res) => {
-  const { name, price, category, description } = req.body;
-
-  console.log(req.body);
+// router.put("/:id", async (req, res) => {
+router.put("/", async (req, res) => {
+  const { name, price, category, description, _id } = req.body;
 
   // Buld GalleryItem Object
   const galleryItemFields = {};
@@ -129,56 +128,58 @@ router.put("/:id", async (req, res) => {
   if (category) galleryItemFields.category = category;
   if (description) galleryItemFields.description = description;
 
-  // If user sent files include them also
-  if (req.files) {
-    // Check for main image update
-    if (req.files.mainImage) {
-      // Delete original mainImage
-      fs.unlink(`./uploads/${galleryItemFields.mainImage}`, err => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-      });
-      let mainImage = req.files.mainImage;
-      console.log(mainImage);
-      mainImage.mv("./uploads/" + mainImage.name);
-      galleryItemFields.mainImage = mainImage.name;
-    }
+  console.log(req.body);
+  try {
+    let item = await GalleryItem.findById(_id);
 
-    // check for images update
-    if (req.files.images) {
-      // Delete images
-      galleryItemFields.images.map(image => {
-        const path = `./uploads/${image}`;
-        fs.unlink(path, err => {
+    if (!item) {
+      return res.status(404).json({ msg: "Gallery item not found" });
+    }
+    // If user sent files include them also
+    if (req.files) {
+      console.log("files run");
+      // Check for main image update
+      if (req.files.mainImage) {
+        console.log("main image ran");
+        // Delete original mainImage
+        fs.unlink(`./uploads/${item.mainImage}`, err => {
           if (err) {
             console.error(err);
             return;
           }
         });
-      });
-      let images = req.files.images;
-      let imagesArray = [];
-      // Save other images to Server
-      //loop all files
-      _.forEach(_.keysIn(images), key => {
-        let image = req.files.images[key];
+        let mainImage = req.files.mainImage;
+        mainImage.mv("./uploads/" + mainImage.name);
+        galleryItemFields.mainImage = mainImage.name;
+      }
 
-        //move photo to upload directory
-        image.mv("./uploads/" + image.name);
-        imagesArray.push(image.name);
-      });
+      // check for images update
+      if (req.files.images) {
+        console.log("images ran");
+        // Delete images
+        item.images.map(image => {
+          const path = `./uploads/${image}`;
+          fs.unlink(path, err => {
+            if (err) {
+              console.error(err);
+              return;
+            }
+          });
+        });
+        let images = req.files.images;
+        let imagesArray = [];
+        // Save other images to Server
+        //loop all files
+        _.forEach(_.keysIn(images), key => {
+          let image = req.files.images[key];
 
-      galleryItemFields.images = imagesArray;
-    }
-  }
+          //move photo to upload directory
+          image.mv("./uploads/" + image.name);
+          imagesArray.push(image.name);
+        });
 
-  try {
-    let item = await GalleryItem.findById(req.params.id);
-
-    if (!item) {
-      return res.status(404).json({ msg: "Gallery item not found" });
+        galleryItemFields.images = imagesArray;
+      }
     }
 
     item = await GalleryItem.findByIdAndUpdate(

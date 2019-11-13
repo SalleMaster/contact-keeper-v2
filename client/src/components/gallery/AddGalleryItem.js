@@ -51,14 +51,6 @@ const AddGalleryItem = () => {
   const onSubmit = e => {
     e.preventDefault();
     addGalleryItem(galleryItem);
-    setGalleryItem({
-      name: "",
-      category: "",
-      description: "",
-      price: "",
-      mainImage: "",
-      images: ""
-    });
   };
 
   const onClose = () => {
