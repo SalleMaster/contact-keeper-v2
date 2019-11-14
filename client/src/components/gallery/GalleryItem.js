@@ -52,7 +52,7 @@ const GalleryItem = ({ galleryItem }) => {
             >
               Read More
             </Link>
-            <DeleteButton id={_id} />
+            <DeleteButton id={_id} key={_id} />
           </div>
         </div>
       </div>

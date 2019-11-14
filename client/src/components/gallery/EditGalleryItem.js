@@ -103,7 +103,7 @@ const EditGalleryItem = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form onSubmit={onSubmit}>
+              <form>
                 <Alerts />
                 <div className="form-group">
                   <label htmlFor="name">Name</label>
@@ -195,12 +195,16 @@ const EditGalleryItem = () => {
                     </label>
                   </div>
                 </div>
+
                 <div className="modal-footer">
-                  <input
-                    type="submit"
-                    value="Confirm Edit"
-                    className="btn btn-primary btn-block mt-4"
-                  />
+                  <div data-dismiss="modal" className="m-auto">
+                    <button
+                      className="btn btn-block btn-primary"
+                      onClick={onSubmit}
+                    >
+                      Confirm Edit
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>
