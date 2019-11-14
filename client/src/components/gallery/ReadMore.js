@@ -41,8 +41,6 @@ const ReadMore = () => {
     similarItems = similarItems.slice(0, 4);
   }
 
-  console.log(similarItems);
-
   return (
     <Fragment>
       <div className="row">
