@@ -1,10 +1,17 @@
 import React, { Fragment, useState, useContext } from "react";
 import GalleryContext from "../../context/gallery/galleryContext";
+import AlertContext from "../../context/alert/alertContext";
+import Alerts from "../layout/Alerts";
 
 const EditGalleryItem = () => {
   const galleryContext = useContext(GalleryContext);
+  const alertContext = useContext(AlertContext);
 
-  let { updateGalleryItem, current, setCurrent, galleryItems } = galleryContext;
+  let { updateGalleryItem, setCurrent, galleryItems } = galleryContext;
+  const { setAlert } = alertContext;
+
+  let current =
+    JSON.parse(localStorage.getItem("current")) || galleryContext.current;
 
   const [galleryItem, setGalleryItem] = useState({
     _id: current._id,
@@ -52,14 +59,10 @@ const EditGalleryItem = () => {
   const onSubmit = e => {
     e.preventDefault();
     updateGalleryItem(galleryItem);
-
     const updated = galleryItems.filter(item => item._id === current._id);
 
     setCurrent(updated[0]);
-  };
-
-  const onClose = () => {
-    console.log("onClose");
+    setAlert("Item Updated", "success");
   };
 
   const openModal = () => {
@@ -96,11 +99,12 @@ const EditGalleryItem = () => {
             <div className="modal-header">
               <h5 className="modal-title">Edit Gallery Item</h5>
               <button className="close" data-dismiss="modal">
-                <span onClick={onClose}>&times;</span>
+                &times;
               </button>
             </div>
             <div className="modal-body">
               <form onSubmit={onSubmit}>
+                <Alerts />
                 <div className="form-group">
                   <label htmlFor="name">Name</label>
                   <input

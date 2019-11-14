@@ -12,6 +12,7 @@ const SimilarItem = item => {
 
   const onClick = () => {
     setCurrent(item.item);
+    localStorage.setItem("current", JSON.stringify(item.item));
   };
   return (
     <Fragment>

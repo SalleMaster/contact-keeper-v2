@@ -32,6 +32,7 @@ const GalleryItem = ({ galleryItem }) => {
 
   const onClick = () => {
     setCurrent(galleryItem);
+    localStorage.setItem("current", JSON.stringify(galleryItem));
   };
 
   return (

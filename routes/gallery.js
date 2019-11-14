@@ -118,7 +118,7 @@ router.get("/:category*?", async (req, res) => {
 // @desc     Update gallery item
 // @access   Public (Should be private)
 // router.put("/:id", async (req, res) => {
-router.put("/", async (req, res) => {
+router.put("/:id", async (req, res) => {
   const { name, price, category, description, _id } = req.body;
 
   // Buld GalleryItem Object
@@ -128,9 +128,8 @@ router.put("/", async (req, res) => {
   if (category) galleryItemFields.category = category;
   if (description) galleryItemFields.description = description;
 
-  console.log(req.body);
   try {
-    let item = await GalleryItem.findById(_id);
+    let item = await GalleryItem.findById(req.params.id);
 
     if (!item) {
       return res.status(404).json({ msg: "Gallery item not found" });
@@ -167,18 +166,25 @@ router.put("/", async (req, res) => {
           });
         });
         let images = req.files.images;
+
         let imagesArray = [];
         // Save other images to Server
-        //loop all files
-        _.forEach(_.keysIn(images), key => {
-          let image = req.files.images[key];
+        // If there are more images
+        if (images.length > 1) {
+          //loop all files
+          _.forEach(_.keysIn(images), key => {
+            let image = req.files.images[key];
 
-          //move photo to upload directory
-          image.mv("./uploads/" + image.name);
-          imagesArray.push(image.name);
-        });
+            //move photo to upload directory
+            image.mv("./uploads/" + image.name);
+            imagesArray.push(image.name);
+          });
 
-        galleryItemFields.images = imagesArray;
+          galleryItemFields.images = imagesArray;
+        } else {
+          images.mv("./uploads/" + images.name);
+          imagesArray.push(images.name);
+        }
       }
     }
 

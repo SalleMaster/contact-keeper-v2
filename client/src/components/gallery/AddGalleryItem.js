@@ -1,10 +1,14 @@
 import React, { Fragment, useState, useContext } from "react";
 import GalleryContext from "../../context/gallery/galleryContext";
+import AlertContext from "../../context/alert/alertContext";
+import Alerts from "../layout/Alerts";
 
 const AddGalleryItem = () => {
   const galleryContext = useContext(GalleryContext);
+  const alertContext = useContext(AlertContext);
 
   const { addGalleryItem } = galleryContext;
+  const { setAlert } = alertContext;
 
   const [galleryItem, setGalleryItem] = useState({
     name: "",
@@ -51,6 +55,7 @@ const AddGalleryItem = () => {
   const onSubmit = e => {
     e.preventDefault();
     addGalleryItem(galleryItem);
+    setAlert("Item Uploaded", "success");
   };
 
   const onClose = () => {
@@ -94,6 +99,7 @@ const AddGalleryItem = () => {
             </div>
             <div className="modal-body">
               <form onSubmit={onSubmit}>
+                <Alerts />
                 <div className="form-group">
                   <label htmlFor="name">Name</label>
                   <input

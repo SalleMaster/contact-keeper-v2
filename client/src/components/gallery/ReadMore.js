@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from "react";
+import React, { useContext, Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 import GalleryContext from "../../context/gallery/galleryContext";
 import SimilarItem from "./SimilarItem";
@@ -7,7 +7,17 @@ import EditGalleryItem from "./EditGalleryItem";
 const ReadMore = () => {
   const galleryContext = useContext(GalleryContext);
 
-  const { current, galleryItems } = galleryContext;
+  const { galleryItems, getGalleryItems } = galleryContext;
+
+  useEffect(() => {
+    getGalleryItems("");
+    // eslint-disable-next-line
+  }, []);
+
+  const current =
+    galleryContext.current || JSON.parse(localStorage.getItem("current"));
+
+  localStorage.setItem("current", JSON.stringify(current));
 
   const { category, description, images, mainImage, name, price } = current;
 
@@ -23,9 +33,15 @@ const ReadMore = () => {
     badgeStyle = "badge-warning";
   }
 
-  const similarItems = galleryItems.filter(
+  let similarItems = galleryItems.filter(
     item => item.category === current.category && item._id !== current._id
   );
+
+  if (similarItems.length > 4) {
+    similarItems = similarItems.slice(0, 4);
+  }
+
+  console.log(similarItems);
 
   return (
     <Fragment>

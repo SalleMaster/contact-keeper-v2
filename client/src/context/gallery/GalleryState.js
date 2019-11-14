@@ -114,6 +114,7 @@ const GalleryState = props => {
       mainImage,
       images
     } = galleryItem;
+    // Form data must be created in order to be able to send multipart form data
     const formData = new FormData();
     formData.append("name", name);
     formData.append("category", category);
@@ -177,15 +178,32 @@ const GalleryState = props => {
       }
     };
 
-    try {
-      // const res = await axios.put(
-      //   `/api/gallery/${galleryItem._id}`,
-      //   galleryItem,
-      //   config
-      // );
+    const {
+      name,
+      category,
+      price,
+      description,
+      mainImage,
+      images
+    } = galleryItem;
 
-      console.log(galleryItem);
-      const res = await axios.put(`/api/gallery`, galleryItem, config);
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("category", category);
+    formData.append("price", price);
+    formData.append("description", description);
+    formData.append("mainImage", mainImage);
+    // Append all images
+    for (let i = 0; i < images.length; i++) {
+      formData.append("images", images[i]);
+    }
+
+    try {
+      const res = await axios.put(
+        `/api/gallery/${galleryItem._id}`,
+        formData,
+        config
+      );
 
       setCurrent(res.data);
 
