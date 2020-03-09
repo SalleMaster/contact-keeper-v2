@@ -45,16 +45,15 @@ app.use('/api/gallery', require('./routes/gallery'));
 // app.use('/upload-photos', require('./routes/photos'));
 
 // Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use(express.static('client/build'));
-  //make uploads directory static
-  app.use('/uploads', express.static('uploads'));
 
-  app.get('/', (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-  );
-}
+// Set static folder
+app.use(express.static('client/build'));
+//make uploads directory static
+app.use('/uploads', express.static('uploads'));
+
+app.get('*', (req, res) =>
+  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+);
 
 const PORT = process.env.PORT || 5000;
 
