@@ -47,7 +47,9 @@ const Navbar = ({ title, icon }) => {
       <h1>
         <i className={icon} /> {title}
       </h1>
-      <ul>{isAuthenticated ? authLinks : guestLinks}</ul>
+      <ul className='text-warning'>
+        {isAuthenticated ? authLinks : guestLinks}
+      </ul>
     </div>
   );
 };
