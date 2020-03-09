@@ -30,11 +30,11 @@ app.use(cors());
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
-app.get('/', (req, res) =>
-  res.json({
-    msg: 'Welcome to The Contact Keeper API'
-  })
-);
+// app.get('/', (req, res) =>
+//   res.json({
+//     msg: 'Welcome to The Contact Keeper API'
+//   })
+// );
 
 //make uploads directory static
 app.use('/uploads', express.static('uploads'));
