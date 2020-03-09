@@ -36,9 +36,6 @@ app.use(morgan('dev'));
 //   })
 // );
 
-//make uploads directory static
-app.use('/uploads', express.static('uploads'));
-
 // Define Routes
 app.use('/api/users', require('./routes/users'));
 app.use('/api/contacts', require('./routes/contacts'));
@@ -51,6 +48,8 @@ app.use('/api/gallery', require('./routes/gallery'));
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
   app.use(express.static('client/build'));
+  //make uploads directory static
+  app.use('/uploads', express.static('uploads'));
 
   app.get('*', (req, res) =>
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
